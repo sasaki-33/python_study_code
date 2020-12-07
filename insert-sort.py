@@ -1,5 +1,3 @@
-#関数を使用する
-
 #関数の定義
 def sort(r):
     wild,i = 0,1
@@ -17,7 +15,6 @@ def sort(r):
     return r
 
 #配列の挿入
-
 a = []
 i = int(input('配列の初期値を一つ入力'))
 a.append(i)
