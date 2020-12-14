@@ -1,0 +1,24 @@
+(1)プログラムの処理時間の計測について
+
+import time
+
+t1 = time.time() 
+ 
+# 計測する処理
+for i in range(1000001):
+    i ** 10
+ 
+# 処理後の時刻
+t2 = time.time()
+ 
+# 経過時間を表示
+elapsed_time = t2-t1
+print(f"経過時間：{elapsed_time}")
+
+但し、処理時間が短すぎると正しく表示されない場合がある。
+
+
+(2)英小文字を昇順に作成する方法
+   数字であれば、range(特定の数字)で作成
+   英字であれば、stringモジュールをimportし、string.ascii_lowercaseで作成できる。
+   list等のコレクションにも変換できる。
