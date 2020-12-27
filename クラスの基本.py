@@ -26,3 +26,29 @@ human.print_data()
 
 warumono1 = Warumono('warumono1',100,100,100,'元気ですか？')
 warumono1.kaiwa()
+
+#多様性
+class Animal():
+    def cry(self):
+        print('')
+        #オーバーライドしてもしなくても良い場合はpass
+        #必ずオーバーライドする場合
+        raise NotImplementedError
+class Cat(Animal):
+    def __init__(self,name):
+        self.name = name
+    #親クラスと同じメソッドを再定義
+    def cry(self):
+        print(self.name + '「にゃー」')
+
+class Dog(Animal):
+    def __init__(self,name):
+        self.name = name
+    #親クラスと同じメソッドを再定義
+    def cry(self):
+        print(self.name + '「わん」')
+
+cat = Cat('ミー')
+cat.cry()
+dog = Dog('ポチ')
+dog.cry()
