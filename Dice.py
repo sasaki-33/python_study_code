@@ -1,3 +1,4 @@
+"""
 #関数の定義
 def random_in(i):
     import random
@@ -14,3 +15,21 @@ def random_in(i):
 r = int(input('サイコロの面を入力。'))
 count = random_in(r)
 print('{}回目の試行で出現。'.format(count))
+"""
+
+import random
+#サイコロの最大値が出る試行回数を数える関数の定義
+def dice(i):
+    T = False
+    count = 0
+    while T == False:
+        me = random.randint(1,i)
+        if me == i:
+            T = True
+            count += 1
+        else :
+            count += 1
+    #回数の出力
+    return count
+i = int(input('サイコロの目を入力'))
+print('{}面の最大値が出るのは{}回目でした。'.format(i,dice(i)))
