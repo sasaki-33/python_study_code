@@ -1,5 +1,5 @@
 import tkinter
-
+import math
 #ボールのデータを設定
 ball = {'dirx':15,'diry':-15,'x':300,'y':240,'w':15}
 
@@ -19,6 +19,40 @@ root.minsize(600,400)
 #画面の作成
 canvas = tkinter.Canvas(width = 600,height = 400)
 canvas.pack()
+
+#ブロックの変数の設定
+blockx = 20
+blocky = 20
+block_row_count = 4
+block_colum_count = 6
+block_width = 75
+block_height = 20
+block_padding = 10
+block_offsettop = 20
+block_offsetleft = 20
+Block = []
+
+#データを辞書型で持つ
+for r in range(block_row_count):
+    tmpblock = []
+    for c in range(block_colum_count):
+        tmpblock.append({'x1':0,'y1':0,'x2':0,'y2':0,'status':1})
+        Block.append(tmpblock)
+
+#ブロックを描画する関数
+def draw_block():
+    for r in range(block_row_count):
+        for c in range(block_colum_count):
+            leftxposition = blockx+(c*block_width)+(c*block_offsetleft)
+            leftyposition = blocky+(r*block_height)+(r*block_offsettop)
+            rightxpositon = leftxposition+block_width
+            rightypositon = leftyposition+block_height
+            Block[r][c]['x1'] = leftxposition
+            Block[r][c]['y1'] = leftyposition
+            Block[r][c]['x2'] = rightxpositon
+            Block[r][c]['y2'] = rightypositon
+            if Block[r][c]['status'] == 1:
+                canvas.create_rectangle(leftxposition,leftyposition,rightxpositon,rightypositon,fill='green',outline='')
 
 def draw_objects():
     #既存の画面を削除
@@ -45,7 +79,7 @@ def move_ball():
         ball["x"] = bx
     if 0 <= by <= 400: 
         ball["y"] = by   
-
+    
 #パドル描写の関数
 def drawpaddle():
     paddlerightx = paddle['paddlex'] + paddle['paddlewidth']
@@ -82,6 +116,8 @@ def game_loop():
     draw_objects()
     move_ball()
     drawpaddle()
+    draw_block()
+
     root.after(50,game_loop)
     
     if right_pressed:
