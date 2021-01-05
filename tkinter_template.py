@@ -7,7 +7,7 @@ ball = {'dirx':15,'diry':-15,'x':300,'y':240,'w':15}
 paddle = {'paddlewidth':100,'paddleheight':10,'paddlex':260,'paddley':300}
 
 #ブロックのデータを設定
-block = {'block_width':100,'block_height':20,'block_x':20,'block_y':20,'block_between':30}
+block = {'block_width':50,'block_height':20,'block_x':30,'block_y':20,'block_between':20}
 
 #パドル操作
 right_pressed = False
@@ -50,10 +50,10 @@ def move_ball():
         ball["y"] = by   
 
 #ブロック描写の関数
-def draw_block():  
-    blockrightx = block['block_x'] + block['block_width']
-    blockdowny = block['block_y'] + block['block_height']
-    canvas.create_rectangle(block['block_x'],block['block_y'],blockrightx,blockdowny,fill='green')
+def draw_block(a,b,c,d):
+    blockrightx = a + c
+    blockdowny = b + d
+    canvas.create_rectangle(a,b,blockrightx,blockdowny,fill='green')
 
 #パドル描写の関数
 def drawpaddle():
@@ -91,8 +91,11 @@ def game_loop():
     draw_objects()
     move_ball()
     drawpaddle()
-    draw_block()
-
+    draw_block(block['block_x'],block['block_y'],block['block_width'],block['block_height'])
+    i = block['block_x'] + block['block_width'] + block['block_between']
+    for d in range(7):
+        draw_block(i,block['block_y'],block['block_width'],block['block_height'])
+        i = i + block['block_width'] + block['block_between'] + d - d
     root.after(50,game_loop)
     
     if right_pressed:
