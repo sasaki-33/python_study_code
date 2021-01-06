@@ -96,8 +96,15 @@ def game_loop():
     for d in range(7):
         draw_block(i,block['block_y'],block['block_width'],block['block_height'])
         i = i + block['block_width'] + block['block_between'] + d - d
-    root.after(50,game_loop)
     
+    draw_block(block['block_x'],block['block_y']+block['block_height']+block['block_between'],block['block_width'],block['block_height'])
+    j = block['block_y'] + 2*block['block_height'] + 2*block['block_between']
+    for t in range(1):
+        draw_block(block['block_x'],j,block['block_width'],block['block_between'])
+        j = j + block['block_height'] + block['block_between'] + t - t 
+
+    root.after(50,game_loop)
+
     if right_pressed:
         if paddle['paddlex'] + paddle['paddlewidth'] + paddle_speed < 620:
             paddle['paddlex'] += paddle_speed
