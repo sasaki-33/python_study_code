@@ -91,17 +91,15 @@ def game_loop():
     draw_objects()
     move_ball()
     drawpaddle()
-    draw_block(block['block_x'],block['block_y'],block['block_width'],block['block_height'])
-    i = block['block_x'] + block['block_width'] + block['block_between']
-    for d in range(7):
-        draw_block(i,block['block_y'],block['block_width'],block['block_height'])
-        i = i + block['block_width'] + block['block_between'] + d - d
-    
-    draw_block(block['block_x'],block['block_y']+block['block_height']+block['block_between'],block['block_width'],block['block_height'])
-    j = block['block_y'] + 2*block['block_height'] + 2*block['block_between']
-    for t in range(1):
-        draw_block(block['block_x'],j,block['block_width'],block['block_between'])
-        j = j + block['block_height'] + block['block_between'] + t - t 
+
+    #横8縦3のブロックを描写
+    j = block['block_y']
+    for t in range(3):
+        i = block['block_x']
+        for d in range(8):
+            draw_block(i,j,block['block_width'],block['block_height'])
+            i = i + block['block_width'] + block['block_between'] + d - d 
+        j = j + block['block_height'] + block['block_between'] + t - t
 
     root.after(50,game_loop)
 
@@ -112,5 +110,6 @@ def game_loop():
     if left_pressed:
         if paddle['paddlex'] - paddle_speed > -20:
             paddle['paddlex'] -= paddle_speed
+            
 game_loop()
 root.mainloop()
