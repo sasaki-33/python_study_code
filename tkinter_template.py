@@ -48,6 +48,16 @@ def move_ball():
         ball["x"] = bx
     if 0 <= by <= 400: 
         ball["y"] = by   
+    
+    if ball['y'] > paddle['paddley']:
+        
+        root1 = tkinter.Tk()
+        root1.title('game over')
+        root1.minsize(600,400)
+        editbox = tkinter.Entry(width = 100)
+        editbox.insert(tkinter.END,'GAME OVER')
+        editbox.pack()
+        root1.mainloop()
 
 #ブロック描写の関数
 def draw_block(a,b,c,d):
@@ -60,7 +70,7 @@ def drawpaddle():
     paddlerightx = paddle['paddlex'] + paddle['paddlewidth']
     paddlelefty = paddle['paddley'] + paddle['paddleheight']
     canvas.create_rectangle(paddle['paddlex'],paddle['paddley'],paddlerightx,paddlelefty,fill='green',outline='')
-
+    
 #右矢印を押したとき
 def right_key(event):
     global right_pressed
