@@ -1,3 +1,4 @@
+"""
 #クラスの作成
 class Human():
     #コンストラクタの定義
@@ -50,5 +51,28 @@ class Dog(Animal):
 
 cat = Cat('ミー')
 cat.cry()
-dog = Dog('ポチ')
-dog.cry()
+"""
+
+class Heikin():
+    def __init__(self,A):
+        self.x,self.y = 0,0
+        self.A = A
+
+    def henkan(self):
+        self.x = [int(i) for i in self.A]
+
+    def nijyou(self):
+        self.x = [i**2 for i in self.x]
+
+    def heikin(self):
+        self.y = sum(self.x)/len(self.x)
+
+def kekka(s):
+    a = Heikin(s)
+    a.henkan()
+    a.nijyou()
+    a.heikin()
+    print(int(a.y))
+
+B = ['1','2','3','4','5']
+kekka(B)
