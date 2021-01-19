@@ -70,4 +70,12 @@ def suuti(x):
         yield xx*2
 for i in suuti(5):
     print(i)
+
+#boolについて
+K = [1,2,3,4,5]
+#条件を満たすならTrueが、満たさないならばFalseが入る
+L = [i%2==0 for i in K]
+#同様
+for i in range(10):
+    print(i%2==0)
 """
