@@ -1,10 +1,9 @@
 #文字型の数式を用意、空白不可
-example = '24+45'
+example = '123+45'
 #文字型の数式の数字、演算子、括弧をそれぞれリストに格納
 expression = [i for i in example]
 
 #数字が複数桁の時、結合し一つの文字として扱う
-
 def henkan(ex):
     basic = 0
     #リストの最後を示す文字を追加
@@ -22,15 +21,18 @@ def henkan(ex):
 
         #スタックの最後の要素が、演算子またはexpressionの最後の要素ならば、それ以前の文字を結合
         if stack[-1] == '*' or stack[-1] == '/' or stack[-1] == '+' or stack[-1] == '-' or stack[-1] == '(' or stack[-1] == ')' or stack[-1] == '%' :
-            t = 0
-            while t < len(stack)-2:
-                total = stack[t] + stack[t+1]
-                t += 1
+            r,total = 0,0
+            while r < len(stack)-1:
+                #結合する文字は数字なのでint型にして結合
+                total = total + int(stack[r])*(10**(len(stack)-r-2))
+                r += 1
+            #文字型に直す
+            total = str(total)
             ex[basic] = total
             #結合することで余分となったexpressionの要素を削除
             while moji > basic + 1:
-                ex.remove(ex[moji-1])
                 moji -= 1
+                ex.remove(ex[moji])
             #演算子以降の文字の結合のためにスタックを空に戻す        
             stack.clear()
             basic = moji + 1
@@ -39,8 +41,7 @@ def henkan(ex):
     expression.remove(ex[-1])
     return ex
 
-i = henkan(expression)
-print(i)
+
 """
 #int型の数値を保持するリストを用意
 value = []
