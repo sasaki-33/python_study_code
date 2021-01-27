@@ -41,6 +41,7 @@ def henkan(ex):
     expression.remove(ex[-1])
     return ex
 
+#解析処理と計算処理を行う関数
 def kaiseki(ext):
     #int型の数値を保持するリストを用意
     value = []
@@ -51,6 +52,7 @@ def kaiseki(ext):
     priority = []
     op,nest,i = 0,0,0
 
+    #解析処理
     while i < len(ext):
         chr = ext[i]
         if '0' <= chr <= '9':
@@ -73,4 +75,31 @@ def kaiseki(ext):
             nest -= 30
 
         i += 1    
-    
+    #計算処理
+    while op > 0:
+        it = 0
+        i = 1
+        while i < op:
+            if priority[it] < priority[i]:
+                it = i
+            i += 1
+        chr = operator[it]
+        if chr == '+':
+            value[it] = value[it] + value[it+1]
+        if chr == '-':
+            value[it] = value[it] - value[it+1]
+        if chr == '*':
+            value[it] = value[it] * value[it+1]
+        if chr == '/':
+            value[it] = value[it] / value[it+1]
+        
+        i = it + 1
+        while i < op:
+            value[i] = value[i+1]
+            operator[i-1] = operator[i]
+            priority[i-1] = priority[i]
+            i += 1
+        
+        op -= 1
+
+    return value[0]
