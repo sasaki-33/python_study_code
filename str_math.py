@@ -1,5 +1,5 @@
 #文字型の数式を用意、空白不可
-example = '123+45'
+example = '123+45-20*3'
 #文字型の数式の数字、演算子、括弧をそれぞれリストに格納
 expression = [i for i in example]
 
@@ -18,7 +18,7 @@ def henkan(ex):
         #文字が演算子か    
         if ex[moji] == '*' or ex[moji] == '/' or ex[moji] == '+' or ex[moji] == '-' or ex[moji] == '(' or ex[moji] == ')':
             stack.append(ex[moji])
-
+        
         #スタックの最後の要素が、演算子またはexpressionの最後の要素ならば、それ以前の文字を結合
         if stack[-1] == '*' or stack[-1] == '/' or stack[-1] == '+' or stack[-1] == '-' or stack[-1] == '(' or stack[-1] == ')' or stack[-1] == '%' :
             r,total = 0,0
@@ -40,7 +40,8 @@ def henkan(ex):
     #exの最後を示す要素を削除
     expression.remove(ex[-1])
     return ex
-
+print(henkan(expression))
+"""
 #解析処理と計算処理を行う関数
 def kaiseki(ext):
     #int型の数値を保持するリストを用意
@@ -79,11 +80,14 @@ def kaiseki(ext):
     while op > 0:
         it = 0
         i = 1
+        #priority配列の優先順位を比べ数値の大きい方をitに設定
         while i < op:
             if priority[it] < priority[i]:
                 it = i
             i += 1
+
         chr = operator[it]
+
         if chr == '+':
             value[it] = value[it] + value[it+1]
         if chr == '-':
@@ -94,6 +98,7 @@ def kaiseki(ext):
             value[it] = value[it] / value[it+1]
         
         i = it + 1
+
         while i < op:
             value[i] = value[i+1]
             operator[i-1] = operator[i]
@@ -103,3 +108,4 @@ def kaiseki(ext):
         op -= 1
 
     return value[0]
+"""
