@@ -1,5 +1,5 @@
 #文字型の数式を用意、空白不可
-example = '123+45-20*3'
+example = '(24+2)*2'
 #文字型の数式の数字、演算子、括弧をそれぞれリストに格納
 expression = [i for i in example]
 
@@ -15,12 +15,13 @@ def henkan(ex):
         #文字が数字、もしくは最後の要素か
         if '0' <= ex[moji] <= '9' or ex[moji] == '%':
             stack.append(ex[moji])
+
         #文字が演算子か    
-        if ex[moji] == '*' or ex[moji] == '/' or ex[moji] == '+' or ex[moji] == '-' or ex[moji] == '(' or ex[moji] == ')':
+        if ex[moji] == '*' or ex[moji] == '/' or ex[moji] == '+' or ex[moji] == '-' or ex[moji] == ')':
             stack.append(ex[moji])
         
         #スタックの最後の要素が、演算子またはexpressionの最後の要素ならば、それ以前の文字を結合
-        if stack[-1] == '*' or stack[-1] == '/' or stack[-1] == '+' or stack[-1] == '-' or stack[-1] == '(' or stack[-1] == ')' or stack[-1] == '%' :
+        if len(stack) > 0 and (stack[-1] == '*' or stack[-1] == '/' or stack[-1] == '+' or stack[-1] == '-' or stack[-1] == ')' or stack[-1] == '%' ):
             r,total = 0,0
             while r < len(stack)-1:
                 #結合する文字は数字なのでint型にして結合
@@ -35,8 +36,18 @@ def henkan(ex):
                 ex.remove(ex[moji])
             #演算子以降の文字の結合のためにスタックを空に戻す        
             stack.clear()
-            basic = moji + 1
-        moji += 1
+            if ex[moji+1] == '(':
+                basic = moji + 2
+            else:
+                basic = moji + 1
+        if ex[0] == '(':
+            basic += 1
+            
+        if len(stack) == 0 and (ex[moji+1] == '(' or ex[moji+1] == '%'):
+            moji += 2
+        else:
+            moji += 1
+
     #exの最後を示す要素を削除
     expression.remove(ex[-1])
     return ex
