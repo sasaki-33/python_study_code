@@ -1,8 +1,3 @@
-#文字型の数式を用意、空白不可
-example = '(24+2)*2'
-#文字型の数式の数字、演算子、括弧をそれぞれリストに格納
-expression = [i for i in example]
-
 #数字が複数桁の時、結合し一つの文字として扱う
 def henkan(ex):
     basic = 0
@@ -12,14 +7,18 @@ def henkan(ex):
     #スタックの機能を果たすリストを用意
     stack = []
     while moji < len(ex):
-        #文字が数字、もしくは最後の要素か
-        if '0' <= ex[moji] <= '9' or ex[moji] == '%':
+        #文字が数字、演算子、もしくは最後の要素か
+        if '0' <= ex[moji] <= '9' or ex[moji] == '%' or ex[moji] == '*' or ex[moji] == '/' or ex[moji] == '+' or ex[moji] == '-' or ex[moji] == ')' :
             stack.append(ex[moji])
 
-        #文字が演算子か    
-        if ex[moji] == '*' or ex[moji] == '/' or ex[moji] == '+' or ex[moji] == '-' or ex[moji] == ')':
-            stack.append(ex[moji])
-        
+        #stackに二文字しかない場合は結合する必要が無いのでstackの内容を削除
+        if len(stack) == 2 and (stack[-1] == '*' or stack[-1] == '/' or stack[-1] == '+' or stack[-1] == '/' or stack[-1] == ')' or stack[-1] == '%'):
+            stack.clear()
+
+        #stackの中身が演算子または%しかない場合は次の要素を参照するためにstackを削除しておく
+        if len(stack) == 1 and (stack[0] == '*' or stack[0] == '/' or stack[0] == '+' or stack[0] == '-' or stack[0] == '%'):
+            stack.clear()
+
         #スタックの最後の要素が、演算子またはexpressionの最後の要素ならば、それ以前の文字を結合
         if len(stack) > 0 and (stack[-1] == '*' or stack[-1] == '/' or stack[-1] == '+' or stack[-1] == '-' or stack[-1] == ')' or stack[-1] == '%' ):
             r,total = 0,0
@@ -29,30 +28,42 @@ def henkan(ex):
                 r += 1
             #文字型に直す
             total = str(total)
+            #結合の基準点にtotalの内容を移す
             ex[basic] = total
             #結合することで余分となったexpressionの要素を削除
             while moji > basic + 1:
                 moji -= 1
                 ex.remove(ex[moji])
+
             #演算子以降の文字の結合のためにスタックを空に戻す        
             stack.clear()
-            if ex[moji+1] == '(':
+
+            #結合の基準点を前括弧の最初の要素に移す
+            if ex[moji] != '%' and ex[moji+1] == '(':
                 basic = moji + 2
             else:
                 basic = moji + 1
-        if ex[0] == '(':
+
+        #moji=0の時、ex[moji]が前括弧であれば基準のbasicを1増やす
+        if moji == 0 and ex[moji] == '(':
             basic += 1
-            
-        if len(stack) == 0 and (ex[moji+1] == '(' or ex[moji+1] == '%'):
+        
+        #結合した後に括弧がくるならば、あらかじめ参照する要素番号をスキップする
+        if ex[moji] != '%' and len(stack) == 0 and (ex[moji+1] == '(' or ex[moji+1] == '%'):
             moji += 2
         else:
             moji += 1
 
     #exの最後を示す要素を削除
-    expression.remove(ex[-1])
+    ex.remove(ex[-1])
     return ex
-print(henkan(expression))
-"""
+
+#文字型の数式を用意、空白不可
+example = '45*(20-12)'
+#文字型の数式の数字、演算子、括弧をそれぞれリストに格納
+expression = [i for i in example]
+
+
 #解析処理と計算処理を行う関数
 def kaiseki(ext):
     #int型の数値を保持するリストを用意
@@ -86,7 +97,8 @@ def kaiseki(ext):
         if chr == ')':
             nest -= 30
 
-        i += 1    
+        i += 1  
+
     #計算処理
     while op > 0:
         it = 0
@@ -98,7 +110,7 @@ def kaiseki(ext):
             i += 1
 
         chr = operator[it]
-
+        #演算を行う
         if chr == '+':
             value[it] = value[it] + value[it+1]
         if chr == '-':
@@ -119,4 +131,3 @@ def kaiseki(ext):
         op -= 1
 
     return value[0]
-"""
