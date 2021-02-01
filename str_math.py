@@ -1,7 +1,7 @@
 """
 文字型で与えられた計算式を、数字、演算子、括弧に分けリストに格納し、
 それぞれの要素を演算の優先順位を考慮しながら演算を行い結果を返すプログラムである。
-数字には桁が存在しないので、複数桁の数値が存在する時、一度数値に変換し一つの文字としてリストに格納する必要がある。
+数字には桁が存在しないので、複数桁とみられる数字が存在する時、一度数値に変換し一つの文字としてリストに格納する必要がある。
 演算処理ではリストの要素から数字、演算子に分けそれぞれの演算の順序を決めるリストも作成する。
 """
 
@@ -65,14 +65,9 @@ def henkan(ex):
     ex.remove(ex[-1])
     return ex
 
-#文字型の数式を用意、空白不可
-example = '45*(20-12)'
-#文字型の数式の数字、演算子、括弧をそれぞれリストに格納
-expression = [i for i in example]
-
 
 #解析処理と計算処理を行う関数
-def kaiseki(ext):
+def kaiseki_enzan(ext):
     #int型の数値を保持するリストを用意
     value = []
     value.append(0)
@@ -138,3 +133,15 @@ def kaiseki(ext):
         op -= 1
     #value[0]に入れた演算結果を返す
     return value[0]
+
+
+#文字型の計算式を与え、その結果を返す関数
+def Str_math(str):
+    #文字型の数式の数字、演算子、括弧をそれぞれリストに格納
+    expression = [i for i in str]
+    ext = henkan(expression)
+    kekka = kaiseki_enzan(ext)
+    return kekka
+
+#例
+print(Str_math('45*(20-12)'))
