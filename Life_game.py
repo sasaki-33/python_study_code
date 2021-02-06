@@ -8,18 +8,24 @@ size = 20
 #ステージの情報をリストで保持
 data = []
 #ステージの情報をランダムに設定
-for j in range(0, rows):
+for j in range(0,rows):
     #リスト内包表記を利用し、1列にcolsの数だけ行を作成する
-    data.append([(randint(0, 9) == 0) for i in range(0, cols)])
+    data.append([(randint(0,9) == 0) for i in range(0,cols)])
+
+#ウィンドウの作成
+win = tkinter.Tk()
+#キャンバスの作成
+cv = tkinter.Canvas(win,width = 600,height = 400)
+cv.pack()
 
 #セルの条件の定義
-def dead_or_alive(x, y):
+def dead_or_alive(x,y):
     #周囲の生存セルを数える
     count = 0
     #テーブルの情報をリストとして保持
-    tabel = [(-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)]
+    tabel = [(-1,-1),(0,-1),(1,-1),(1,0),(1,1),(0,1),(-1,1),(-1,0)]
     for i in tabel:
-        x2, y2 = x + i[0], y + i[1]
+        x2,y2 = x + i[0],y + i[1]
         if 0 <= x2 < cols and 0 <= y2 < rows:
             if data[y2][x2]:
                 count += 1
@@ -34,5 +40,14 @@ def dead_or_alive(x, y):
         #過疎or過密のとき
         else:
             return False
-        
+    
     return data[y][x]
+
+#データを次世代に更新する関数
+def sedai():
+    global data
+    new_data = []
+    for y in range(0,rows):
+        new_data.append([dead_or_alive(x, y) for x in range(0,cols)])
+    #dataに次世代の情報を更新する
+    data = new_data
