@@ -51,3 +51,17 @@ def sedai():
         new_data.append([dead_or_alive(x, y) for x in range(0,cols)])
     #dataに次世代の情報を更新する
     data = new_data
+
+#ステージの描画
+def draw_stage():
+    #キャンバスの内容を破棄
+    cv.delete('all')
+    for y in range(0, rows):
+        for x in range(0, cols):
+            if not data[y][x]:
+                continue
+            
+            #x1,y1の値を更新
+            x1,y1 = [x*size, y*size]
+            #楕円を描く
+            cv.create_oval(x1,y1,x1+size,y1+size,fill="green",width=0)
