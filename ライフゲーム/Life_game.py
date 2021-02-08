@@ -53,7 +53,7 @@ def sedai():
     data = new_data
 
 #ステージの描画
-def draw_stage():
+def stage():
     #キャンバスの内容を破棄
     cv.delete('all')
     for y in range(0, rows):
@@ -65,3 +65,17 @@ def draw_stage():
             x1,y1 = [x*size, y*size]
             #楕円を描く
             cv.create_oval(x1,y1,x1+size,y1+size,fill="green",width=0)
+
+#200ミリ秒ごとに世代を進める
+def sedai_loop():
+    #次世代に更新
+    sedai()
+    #ステージを描画
+    stage()
+    #200ミリ秒経過で世代更新とステージ描画を実行
+    win.after(200, sedai_loop)
+
+#関数の実行
+sedai_loop()
+#メインループ
+win.mainloop()    
