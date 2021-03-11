@@ -54,10 +54,9 @@ _A = h/3Σ(y2i+4*y2i+1+y2i+2) (数列和のiは0~n-1の範囲)_
 5. 一致した時の分割数と題意を満たす積分値を出力する
 
 ```py:Simpson's rule.py
-#mathをインポート
 import math
 
-#シンプソン積分を求め、10^9し、小数点を切り捨てる関数の定義
+#シンプソン積分を求め10^9し、小数点を切り捨てる関数の定義
 def simpson(a):
     i = 0
     kekka = 0
@@ -84,7 +83,7 @@ def simpson(a):
 Nx = 2
 Ny = Nx + 2
 
-#NxとNyの値が一致するまで分割数を増やす
+#積分値が一致するまで分割数を増やす
 while simpson(Nx) != simpson(Ny) :
     Nx = Ny
     Ny = Ny + 2
