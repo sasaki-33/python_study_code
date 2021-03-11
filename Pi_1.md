@@ -25,7 +25,6 @@ S1/S2 = π/4
 
 ## コード
 
-
 ```py 
 
 import random
