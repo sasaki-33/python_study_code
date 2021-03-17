@@ -12,6 +12,8 @@ This repository have my study records related to that
   
 * [RGB and distance](https://github.com/sasaki-33/python_study_code/blob/master/RGB_sample.md)  
   
+* [Str_Calculation](https://github.com/sasaki-33/python_study_code/blob/master/Str_Calculation.md)  
+
 * [Life Game](https://github.com/sasaki-33/python_study_code/blob/master/Life_Game.md) 
 * sort  
 1. [Shell sort](https://github.com/sasaki-33/python_study_code/blob/master/Sort/Shell_sort.py)  
