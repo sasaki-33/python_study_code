@@ -1,7 +1,7 @@
 
 
 # RGB値から距離変化を算出する
-※As this program is experiment,I don't guarantee accuracy
+## ※As this program is experiment,I don't guarantee accuracy
 ## 序論
 光は大気中のゴミやチリの分子とぶつかり減衰していく。    
 光には「光の散乱」という性質があるからである。  
@@ -9,7 +9,6 @@
 色は光の波長により決まり、可視域では波長が短い光は青色、波長が長い光は赤色に近くなる。  
 つまり、波長の短い青色の光は減衰しやすくなる。  
 夕焼けもこの原理に基づき発生している。  
- 
 
 >[出典:アンディマンのテクノロジー(援技力)]   http://andyman.techblog.jp/archives/21102117.html 
 
@@ -36,11 +35,10 @@ x,y,z = -(観測の波長-中心波長/正規分布の半値半幅)^2
 ### 準備2.波長の求め方
 上記の中心波長はCIE(国際照明委員会)で、R=700.0nm,G=546.1nm,B=435.8nmと定められている。  
 半値半幅はそれぞれ、(90,80,80)である。  
-また、観測の波長はxyz色空間値と波長の変換により求める。 
-  
-[ソースコード](https://github.com/sobotka/blender/blob/3076d95ba441cd32706a27d18922a30f8fd28b8a/intern/cycles/kernel/svm/svm_wavelength.h) 
+また、観測の波長はxyz色空間値と波長の変換により求める。   
+[参照ソースコード](https://github.com/sobotka/blender/blob/3076d95ba441cd32706a27d18922a30f8fd28b8a/intern/cycles/kernel/svm/svm_wavelength.h) 
 
-RGB値からxyz色空間値への変換は、ITU-T BT.709で定義されている変換式を用いて行う。  
+RGB値からxyz色空間値への変換は、ITU-T BT.709で定義されている変換式を用いて行い、xyz色空間値から波長を求める。  
 
 
 >[出典:RGBからXYZへの変換]http://vig.is.env.kitakyu-u.ac.jp/etc/rgb2xyz.html  
