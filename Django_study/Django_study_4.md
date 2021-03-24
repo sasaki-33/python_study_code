@@ -51,23 +51,22 @@ def index(request):
 
 「index.html」を編集し、
 ```html
-{% load static %}
 <!doctype html>
 <html lang="ja">
 <head>
     <meta charset="utf-8">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="bootstrapのURL" crossorigin="anonymous">
-    </head>
-<body class="container">
-    <h1 class="display-4 text-primary">{{title}}</h1>
-    <p class="h5 mt-4">{{message|safe}}</p>
-    <form action="{% url 'index' %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="click">
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <p>{{msg|safe}}</p>
+    <form action="{% url 'index' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="click">
     </form>
 </body>
 </html>
 ```
 * index関数のparamsで用意した'form'にはTestFormクラスのインスタンスが設定されているので、views. py実行時にはTestFormクラスによりフォームが自動生成される  
+* form.as_pはラベルとフィールド全体を< p >でくくり出力する
