@@ -30,9 +30,18 @@ def index(request):
     }
     return render(request, 'test/index.html', params)
 ```  
-コード内にエラーが発生し、Class '~~~' has no 'objects' memberpylint(no-member)となった  
+* 「all」は、objectsに存在するメソッドで、テーブルにあるレコードを、モデルのインスタンスのセットとしてまとめている  
+
+※コード内にエラーが発生し、Class '~~~' has no 'objects' memberpylint(no-member)となった  
 モデルクラスには標準で、objectsという属性を持つはずなのでmodels. pyで
 ```python
 objects = models.Manager()
 ```
-を追加し、再度認識させたところ、エラー表示が無くなった
+を追加し、クラス属性をobjectsという変数を格納することでエラーを解決する  
+(objectsという名前の変数にManagerクラスのインスタンスを格納する)
+
+## objectsについて
+objectsはManagerクラスのインスタンスのことで、Managerクラスとは「データベースクエリ」を操作するためのクラスである  
+「データベースクエリ」とは、データベースに対して様々な要求をするためのもので、「SQL」でデータベースへ問い合わせる内容を記述した命令文を「クエリ」という  
+Managerクラスでは、メソッド内で、クエリを作成し、データベースに問い合わせをし、その結果であるレコードを取得する  
+つまりManagerクラスは、Pythonのメソッドをデータベースクエリに翻訳して実行するものといえる  
