@@ -45,3 +45,53 @@ objectsはManagerクラスのインスタンスのことで、Managerクラス�
 「データベースクエリ」とは、データベースに対して様々な要求をするためのもので、「SQL」でデータベースへ問い合わせる内容を記述した命令文を「クエリ」という  
 Managerクラスでは、メソッド内で、クエリを作成し、データベースに問い合わせをし、その結果であるレコードを取得する  
 つまりManagerクラスは、Pythonのメソッドをデータベースクエリに翻訳して実行するものといえる  
+
+## モデルの表示  
+index.htmlを編集し、
+```html
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <p>{{msg|sage}}<p>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>NAME<th>
+            <th>GENDER</th>
+            <th>MAIL<th>
+            <th>AGE</th>
+            <th>BIRTHDAY</th>
+        </tr>
+    {% for item in data %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{% if item.gender == False %}male{% endif %}
+                {% if item.gender == True %}female{% endif %}</td>
+            <td>{{item.mail}}</td>
+            <td>{{item.age}}</td>
+            <td>{{item.birthday}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>
+```
+* {% for item in data %}で、viewsから渡されたdataのオブジェクトを順に取り出し、変数itemに入れる繰り返し文である  
+{% endfor %}で繰り返し範囲の終了を表す  
+
+urls. pyを編集し、
+```python
+from django.urls import path
+from . import views
+
+urlpattrens = [
+    path('', views.index, name='index'),
+]
+```
+これで、データベースからobjects.all()で取り出した情報をviewsを介し、index.htmlに変数を渡すことで、その情報をブラウザ上で表示することができた
