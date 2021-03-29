@@ -46,7 +46,7 @@ objectsはManagerクラスのインスタンスのことで、Managerクラス�
 Managerクラスでは、メソッド内で、クエリを作成し、データベースに問い合わせをし、その結果であるレコードを取得する  
 つまりManagerクラスは、Pythonのメソッドをデータベースクエリに翻訳して実行するものといえる  
 
-## モデルの表示  
+## レコードの表示  
 index.htmlを編集し、
 ```html
 <!doctype html>
@@ -94,4 +94,92 @@ urlpattrens = [
     path('', views.index, name='index'),
 ]
 ```
-これで、データベースからobjects.all()で取り出した情報をviewsを介し、index.htmlに変数を渡すことで、その情報をブラウザ上で表示することができた
+これで、データベースからobjects.all()で取り出した情報をviewsを介し、index.htmlに変数を渡すことで、その情報をブラウザ上で表示することができる
+
+## 特定のレコードのみ表示
+IDを入力するフォームを用意し、そのIDと一致するレコードを取り出す  
+特定のレコードを取得するために、「get」というメソッドを使用する  
+フォームを用意するために、TestFormを編集し、  
+```python
+from django import forms
+
+class TestForm(forms.Form):
+    id = forms.IntegerField(label='ID')
+```  
+views. pyを編集し、  
+```python
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import Human
+from .forms import TestForm
+
+def index(request):
+    params = {
+        'title':'hello',
+        'msg':'kensaku',
+        'form':TestForm(),
+        'data':[],
+    }
+    if (request.method == 'POST'):
+        i = request.POST['id']
+        item = Human.objects.get(id=i)
+        params['data'] = [item]
+        params['form'] = TestForm(request.POST)
+    else:
+        params['data'] = Human.objects.all()
+    
+    return render(request, 'test/index.html', params)
+```
+* 変数「i」に、POSTにより取得したキー値が「id」である値を格納し、さらにその値と一致するレコードを変数itemに格納している  
+変数「item」に格納された値は、一つのモデルのインスタンスであり、all()で得られたようなインスタンスのセットでは無いので、セットにした[ item ]を、params[ 'data' ]に格納している  
+これにより、index.htmlの{% for item in data %}が実行可能になる  
+
+index.htmlも編集し、  
+```html
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <p>{{msg|safe}}</p>
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="click">
+    </form>
+    <hr>
+    <table>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>GENDER</th>
+        <th>MAIL</th>
+        <th>AGE</th>
+        <th>BIRTHDAY</th>
+    </tr>
+    {% for item in data %}
+    <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{% if item.gender == False %}male{% endif %}
+            {% if item.gender == True %}female{% endif %}</td>
+        <td>{{item.mail}}</td>
+        <td>{{item.age}}</td>
+        <td>{{item.birthday}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>
+```  
+## 補足
+html内のタグについての補足  
+* < p >タグは段落を指定するタグで< p >~</ p >が一つの段落であることを表す
+* < hr >タグは水平の横線を引くためのタグ
+* < tr >タグは表の行部分を指定するタグで< tr >~</ tr >で表の行部分を指定する  
+< th >や< td >で表題や縦軸を指定してセルを定義する  
+* < th >はTable Headerの略で、セルの内容が見出しとなるヘッダセルを作成する
+* < td >はTable Dataの略で、セルの内容がデータであるときに使用する
