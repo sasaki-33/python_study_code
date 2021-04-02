@@ -57,7 +57,7 @@ def index(request):
         'title':'all data',
         'data':data,
     }
-    return render(request, 'hello/index.html', params)
+    return render(request, 'test/index.html', params)
 # create.htmlの表示内容を定義
 def create(request):
     params = {
@@ -76,10 +76,10 @@ def create(request):
         human = Human(name=name,mail=mail,gender=gender,age=age,birthday=birth)
         # インスタンス(レコード)を保存
         human.save()
-        # POST送信された場合、/helloにリダイレクトする
-        return redirect(to='/hello')
+        # POST送信された場合、/testにリダイレクトする
+        return redirect(to='/test')
     # POST送信でない場合、通常のフォーム画面を表示
-    return render(request, 'hello/create.html', params)
+    return render(request, 'test/create.html', params)
 ```  
 ### ModelFormを使用する方法
 forms. pyに新たにクラスを追加する
@@ -108,8 +108,73 @@ def create(request):
         human = HumanForm(request.POST, instance = obj)
         # インスタンス(レコード)を保存
         human.save()
-        # /helloにリダイレクトする
-        return redirect(to='/hello')
-    return render(request, 'hello/create.html', params)
+        # /testにリダイレクトする
+        return redirect(to='/test')
+    return render(request, 'test/create.html', params)
 ```  
-* ここでは、Modelとrequest.POSTの情報を、HumanFormにて一つにまとめ、レコードを作成している  
+* HumanFormにて、Modelとrequest.POSTの情報を、HumanFormにて一つにまとめ、レコードを作成している  
+
+## update(更新)を行う
+Humanインスタンスを使用して情報を上書きし、HumanFormでレコードを作成し、保存すれば、更新ができる  
+urls. pyを編集し、  
+```python
+urlpatterns = [
+    path('',views.index,name='index'),
+    path('create',views.create,name='create'),
+    path('edit/<int:num>',views.edit,name='edit')
+]
+```
+* これにより、edit/ID番号にアクセスした時、viewsのedit関数を実行できる  
+
+
+次に、/testにアクセスした時に、レコード内容の表示と同時に、更新できるリンクを作成しておく(index.html)
+```html
+<td><a href="{% url 'edit' item.id %}">Edit</a></td>
+```  
+
+これにより、/edit/ID番号にアクセスされ、urlpatternsに従いedit関数が実行されるので、viewsにedit関数を作成する
+```python
+# urlpatternsにより、ID番号もnumとして受け取る
+def edit(request,num):
+    # IDと一致するレコードオブジェクトのみ変数に格納
+    obj = Human.objects.get(id=num)
+    # POST送信(更新された情報)ならば
+    if (reequest.method == 'POST'):
+        # レコードの作成
+        human = HumanForm(request.POST,instance=obj)
+        # 保存
+        human.save()
+        # /testにリダイレクトする
+        return redirect(to='/test')
+    params = {
+        'title':'edit your data',
+        'id':num,
+        'form':HumanForm(instance=obj),
+    }
+    return render(request, 'test/edit.html', params)
+```  
+
+最後に値が渡されるedit.htmlを新規作成する
+```html
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <form action="{% url 'edit' id %}" method="post">
+    {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr><th><td>
+            <input type="submit" value="click">
+        </td></th></tr>
+        </table>
+    </form>
+</body>
+</html>
+```
+* action="{% url 'edit' id %}"とすることで、編集するID番号ごとにtest/edit/ID番号のアドレスが設定される
+
