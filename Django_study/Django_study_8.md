@@ -81,6 +81,7 @@ def create(request):
     # POST送信でない場合、通常のフォーム画面を表示
     return render(request, 'test/create.html', params)
 ```  
+以上
 ### ModelFormを使用する方法
 forms. pyに新たにクラスを追加する
 ```python
@@ -112,7 +113,9 @@ def create(request):
         return redirect(to='/test')
     return render(request, 'test/create.html', params)
 ```  
-* HumanFormにて、Modelとrequest.POSTの情報を、HumanFormにて一つにまとめ、レコードを作成している  
+* HumanFormにて、Modelとrequest.POSTの情報を、HumanFormにて一つにまとめ、レコードを作成している   
+
+以上
 
 ## update(更新)を行う
 Humanインスタンスを使用して情報を上書きし、HumanFormでレコードを作成し、保存すれば、更新ができる  
@@ -178,3 +181,65 @@ def edit(request,num):
 ```
 * action="{% url 'edit' id %}"とすることで、編集するID番号ごとにtest/edit/ID番号のアドレスが設定される
 
+## Delete(削除)を行う
+削除するモデルのインスタンスを取得し、そのインスタンスの「delete」メソッドを実行すれば、削除できる
+urls. pyのurlpatternsを編集し、  
+```python
+path = ('delete/<int:num>', views.delete, name='delete'),
+```  
+を追加し、/delete/ID番号にアクセスした時に、delete関数を実行するようにする  
+また、更新と同様にindex.htmlに、Deleteと書かれたリンクを追加する  
+```html
+<td><a href="{% url 'delete' item.id %}">Delete</a></td>  
+```  
+/delete/ID番号のURLにアクセスした時に、delete関数を実行するようにしたので、  
+views. pyにdelete関数を追加し、  
+```python
+# urlpatternから、ID番号も引数として取得
+def delete(request,num):
+    # IDと一致するモデルのインスタンスを取得し、変数に格納
+    human = Human.objects.get(id=num)
+    if (request.method == 'POST'):
+        # POST送信ならば、そのインスタンスを削除する
+        human.delete()
+        # /testにリダイレクトする
+        return redirect(to='/test')
+    params = {
+        'title':'delete this data',
+        # idは受け取ったID番号
+        'id':num,
+        # 該当インスタンスを渡す
+        'obj':human,
+    }
+    return render(request, 'test/delete.html', params)
+```  
+
+削除する場合のhtmlを新規作成する  
+```html
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <table>
+        <tr><th>ID</th><td>{{obj.id}}</td></tr>
+        <tr><th>Name</th><td>{{obj.name}}</td></tr>
+        <tr><th>Gender</th><td>
+        {% if obj.gender == False %}male{% endif %}
+        {% if obj.gender == True %}female{% endif %}</td></tr>
+        <tr><th>Email</th><td>{{obj.mail}}</td></tr>
+        <tr><th>Age</th><td>{{obj.age}}</td></tr>
+        <tr><th>Birth</th><td>{{obj.birthday}}</td></tr>
+        <form action="{% url 'delete' id %}" method = "post">
+        {% csrf_token %}
+        <tr><th></th><td>
+            <input type="submit" value="delete"></td></tr>
+        </form>
+    </table>
+</body>
+</html>
+```  
+以上
