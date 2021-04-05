@@ -87,4 +87,47 @@ def find(request):
 </body>
 </html>
 ```  
-これで、検索が可能になる
+これで、検索が可能になる  
+検索で使用するfilterは、繋げて複数の条件を使用することができる  
+ANDの場合、(例) Human.objects.filter(項目名 = 値).filter(項目名 = 値)  
+ORの場合、以下を追記し、
+```python
+from django.db.models import Q
+```  
+(例) Human.objects.filter(Q(項目名 = 値) | Q(項目名 = 値))
+
+## 様々な検索条件の方法
+### あいまい検索
+filterメソッドでは「項目名＝値」で検索を行っていたが、このままでは完全にその値と一致するレコードしか検索できない  
+そこで、値が含まれている場合にそれを取り出せるあいまい検索を行う  
+* Human.objects.filter(項目名__contains = 値) ・・・　値を含む検索
+* Human.objects.filter(項目名__strtswith = 値)・・・　値で始まるものの検索  
+* Human.objects.filter(項目名__endswith = 値)・・・　値で終わるものの検索  
+
+### 大文字と小文字の区別
+filter検索では、大文字と小文字を区別する  
+大文字と小文字を区別しない場合は、以下を使用する
+* Human.objects.filter(項目名__iexact = 値)  
+また、大文字と小文字を区別せず、かつあいまい検索を行いたい場合は以下を使う  
+* Human.objects.filter(項目名__icontains = 値)  
+* Human.objects.filter(項目名__istartswith = 値)  
+* Human.objects.filter(項目名__iendswith = 値)  
+
+### 数値検索の範囲
+数値で検索する場合、大小関係を指定できる  
+* Human.objects.filter(項目名__gt = 数値)・・・　数値より大きいものを検索
+* Human.objects.filter(項目名__gte = 数値)・・・　数値以上のものを検索
+* Human.objects.filter(項目名__lt = 値)・・・　数値より小さいものを検索
+* Human.objects.filter(項目名__lte = 値)・・・　値より大きいものを検索  
+
+### リストで検索
+リストを用意し、中の値と一致するレコードを全て取り出すことが出来る  
+```python
+# フォームで送信された値を取り出す
+find = request.POST['find']
+# 値をリストに変換
+list = find.split()
+# リストに含まれる値を検索する
+data = Human.objects.filter(項目名__in = list)
+```  
+* フォームには、半角スペースで値を書き出せばよい
