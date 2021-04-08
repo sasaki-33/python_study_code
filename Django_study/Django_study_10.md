@@ -18,3 +18,38 @@ allやfilterで値を取り出し、合計や平均を算出することも可�
 3. Avg(項目名) ・・・指定した項目の平均を返す
 4. Min(項目名) ・・・指定した項目の最小値を返す
 5. Count(項目名) ・・・指定した項目の最大値を返す  
+
+## SQLの実行方法
+SQLデータベースは、SQLのクエリでデータベースと情報のやり取りを行うため、Djangoの中から直接SQLクエリを実行できる  
+モデルのobjectsに設定されているオブジェクトに「Manager」クラスが用意されている  
+「Manager」クラスは、データベースクエリを操作するための機能を提供するもので、メソッドなどの内部から、SQLクエリを作成しデータベースに渡している  
+このManagerクラスに「raw」というメソッドが用意されており、これを使用し直接SQLクエリをデータベースに渡す  
+find関数を編集し、  
+```python
+def find(request):
+    # POST送信された場合の処理
+    if(request.method == 'POST'):
+        msg = request.POST['find']
+        form = FindForm(request.POST)
+        # SQLの構文(全て選択)
+        sql = 'select * from test_human'
+        if (msg != ''):
+            # whereで条件を付ける
+            sql += ' where ' + msg
+        # rawで直接SQLを実行させる
+        data = Human.objects.raw(sql)
+        msg = sql
+    else:
+        msg = 'search data'
+        form = FindForm()
+        data = Human.objects.all()
+    params = {
+        'title':'your data',
+        'message':msg,
+        'form':form,
+        'data':data,
+    }
+    return render(request, 'test/find.html', params)
+```  
+* 「select * from テーブル名」で、テーブルから全てを選択する  
+テーブル名は、「アプリケーション名_モデル名」という形で指定する
