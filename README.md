@@ -8,6 +8,8 @@ This repository have my study records related to that
 
 ## Contents
 
+* [Django_study_record](https://github.com/sasaki-33/python_study_code/tree/master/Django_study)  
+
 * [Simpson's_rule](https://github.com/sasaki-33/python_study_code/blob/master/Simpson's_rule.md)  
   
 * [RGB and distance](https://github.com/sasaki-33/python_study_code/blob/master/RGB_sample.md)  
@@ -15,6 +17,7 @@ This repository have my study records related to that
 * [Str_Calculation](https://github.com/sasaki-33/python_study_code/blob/master/Str_Calculation.md)  
 
 * [Life Game](https://github.com/sasaki-33/python_study_code/blob/master/Life_Game.md) 
+
 * sort  
 1. [Shell sort](https://github.com/sasaki-33/python_study_code/blob/master/Sort/Shell_sort.py)  
 2. [Selection sort](https://github.com/sasaki-33/python_study_code/blob/master/Sort/Sentaku_sort.py)  
@@ -31,8 +34,9 @@ This repository have my study records related to that
   
    
 ## Requirement
-Python 3.8.5
-  
+Python 3.8.5  
+Django 3.0.2  
+Visual Studio Code
 
 ## Note
 basically,I use Japanese  
