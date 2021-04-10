@@ -2,7 +2,7 @@
 
 *python_study_code* is Python'code for basic learning  
 
-I have studied Python for half a year and have an interest in Numerical analysis and algorithm topic 
+I have studied Python for half a year and have an interest in Numerical analysis and algorithm topic and WEB'application  
 
 This repository have my study records related to that
 
