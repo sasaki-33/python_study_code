@@ -9,11 +9,12 @@ This repository have my study records related to that
 ## Contents
 
 * [Django_study_record](https://github.com/sasaki-33/python_study_code/tree/master/Django_study)  
+(unfinished)  
 
 * [Simpson's_rule](https://github.com/sasaki-33/python_study_code/blob/master/Simpson's_rule.md)  
-  
+
 * [RGB and distance](https://github.com/sasaki-33/python_study_code/blob/master/RGB_sample.md)  
-  
+(unfinished)     
 * [Str_Calculation](https://github.com/sasaki-33/python_study_code/blob/master/Str_Calculation.md)  
 
 * [Life Game](https://github.com/sasaki-33/python_study_code/blob/master/Life_Game.md) 
