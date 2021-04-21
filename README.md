@@ -1,5 +1,7 @@
 # python_study_code
 
+※Now,I stop pushing documents
+
 *python_study_code* is Python'code for basic learning  
 
 I have studied Python for half a year and have an interest in Numerical analysis and algorithm topic and WEB'application  
